@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // 'cliente' | 'empleado'
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  orders    Order[]
+
+  @@map("users")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  category    String
+  stock       Int      @default(50)
+  imageUrl    String   @map("image_url")
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("products")
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  userId          Int?        @map("user_id")
+  customerName    String      @map("customer_name")
+  customerEmail   String      @map("customer_email")
+  customerPhone   String?     @map("customer_phone")
+  shippingAddress String      @map("shipping_address")
+  total           Float
+  status          String      @default("En Revisión Técnica")
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  user            User?       @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int    @id @default(autoincrement())
+  orderId     Int    @map("order_id")
+  productName String @map("product_name")
+  price       Float
+  quantity    Int
+
+  order       Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}

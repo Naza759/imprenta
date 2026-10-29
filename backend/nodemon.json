@@ -1,0 +1,7 @@
+{
+  "watch": ["src"],
+  "ext": "js",
+  "ignore": ["*.db", "*.db-shm", "*.db-wal"],
+  "exec": "node src/server.js",
+  "signal": "SIGTERM"
+}

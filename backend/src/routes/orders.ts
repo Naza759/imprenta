@@ -92,7 +92,7 @@ router.post('/', async (req: AuthenticatedRequest, res: Response): Promise<void>
 // PATCH /api/orders/:id
 router.patch('/:id', async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id as string, 10);
     const { status } = req.body as { status?: string };
 
     if (!status) {

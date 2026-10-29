@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
 // DELETE /api/products/:id
 router.delete('/:id', (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     db.prepare('DELETE FROM products WHERE id = ?').run(id);
     return res.json({ ok: true, message: 'Producto eliminado.' });
   } catch (err) {

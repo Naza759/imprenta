@@ -56,7 +56,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
 // DELETE /api/products/:id
 router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id as string, 10);
     await prisma.product.delete({ where: { id } });
     res.json({ ok: true, message: 'Producto eliminado.' });
   } catch (err) {
